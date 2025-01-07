@@ -24,6 +24,9 @@ import `fun`.ponyets.ktoroomsample.ui.theme.KtorOOMSampleTheme
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitFormWithBinaryData
+import io.ktor.http.ContentType
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import io.ktor.utils.io.streams.asInput
 import kotlinx.coroutines.launch
 
@@ -40,7 +43,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     snackbarHost = { SnackbarHost(snackbarHostState) }
                 ) { innerPadding ->
-                    Box(Modifier.fillMaxSize().padding(innerPadding), Alignment.Center) {
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding), Alignment.Center) {
                         val coroutineScope = rememberCoroutineScope()
                         val galleryLauncher =
                             rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
@@ -52,7 +58,19 @@ class MainActivity : ComponentActivity() {
                                         httpClient.submitFormWithBinaryData(
                                             "$HOST/upload",
                                             formData {
-                                                appendInput("file") {
+                                                appendInput(
+                                                    "file",
+                                                    Headers.build {
+                                                        append(
+                                                            HttpHeaders.ContentType,
+                                                            ContentType.Video.MP4.toString()
+                                                        )
+                                                        append(
+                                                            HttpHeaders.ContentDisposition,
+                                                            "filename=\"video.mp4\""
+                                                        )
+                                                    },
+                                                ) {
                                                     applicationContext.contentResolver.openInputStream(
                                                         it
                                                     )!!.asInput()

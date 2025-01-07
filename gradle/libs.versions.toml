@@ -8,7 +8,7 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.12.01"
-ktor-client = "2.3.13"
+ktor-client = "3.0.2"
 ktor-server = "3.0.2"
 logback = "1.4.14"
 
